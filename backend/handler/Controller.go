@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 const (
@@ -11,8 +13,20 @@ const (
 	HelloWorldMessage = "Hello World!"
 )
 
+type Message struct {
+	Message string `json:"message"`
+}
+
+// Future endpoints shouldn't be defined here I don't think
 func HelloWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, HelloWorldMessage)
+	time.Sleep(5 * time.Second)
+
+	fmt.Println(fmt.Sprintf("Handling request %+v", r))
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	m := Message{HelloWorldMessage}
+	json.NewEncoder(w).Encode(m)
 }
 
 func NewHandler() *Handler {
