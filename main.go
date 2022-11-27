@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"recipe-tracker-ms/handler"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	c := handler.NewHandler()
+	c.AddRoute("/hello", handler.HelloWorld)
+	c.Start()
 }
