@@ -4,11 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 const (
-	Host              = "localhost"
+	Host              = ""
 	Port              = "8080"
 	HelloWorldMessage = "Hello World!"
 )
@@ -19,8 +18,6 @@ type Message struct {
 
 // Future endpoints shouldn't be defined here I don't think
 func HelloWorld(w http.ResponseWriter, r *http.Request) {
-	time.Sleep(5 * time.Second)
-
 	fmt.Println(fmt.Sprintf("Handling request %+v", r))
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -40,6 +37,6 @@ func (h *Handler) AddRoute(path string, action func(w http.ResponseWriter, r *ht
 }
 
 func (h *Handler) Start() error {
-	err := http.ListenAndServe(Host+":"+Port, nil)
+	err := http.ListenAndServe(":"+Port, nil)
 	return err
 }
