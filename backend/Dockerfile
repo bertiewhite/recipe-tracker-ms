@@ -5,7 +5,7 @@ WORKDIR /app
 # We should probably only copy what's needed to make sure this doesn't exponentially grow
 COPY . .
 
-RUN go build -o /app/service
+RUN GOOS=linux GOARCH=arm go build -o /app/service
 
 FROM alpine:3.17
 
