@@ -1,15 +1,16 @@
-FROM golang:1.19.2
+FROM golang:1.19-alpine AS build
 
-WORKDIR /go/delivery
+WORKDIR /app
 
 # We should probably only copy what's needed to make sure this doesn't exponentially grow
 COPY . .
 
-RUN go build -o recipe-tracker-ms
+RUN GOOS=linux GOARCH=arm go build -o /app/service
 
-RUN groupadd --gid 1000 go && useradd --uid 1000 --gid go --shell /bin/bash --create-home go
+FROM alpine:3.17
 
-USER go
+COPY --from=build /app /app
+
 EXPOSE 8080
 
-CMD ./recipe-tracker-ms
+ENTRYPOINT ["/app/service"]
